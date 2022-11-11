@@ -138,13 +138,15 @@ describe('Central de Atendimento ao Cliente TAT', function() {
           .should('not.be.checked')
     })
 
-    it('Selecionar um arquivo da pasta fixtures', function() {
-        cy.get('input[type="file"]')
-          .should('not.have.value')
-          .selectFile('./cypress/fixtures/example.json')
-          .should(function($input){
-            expect($input[0].files[0].name).to.equal('example.json')
-            })
+    Cypress._.times(3, function(){
+        it('Selecionar um arquivo da pasta fixtures', function() {
+          cy.get('input[type="file"]')
+            .should('not.have.value')
+            .selectFile('./cypress/fixtures/example.json')
+            .should(function($input){
+              expect($input[0].files[0].name).to.equal('example.json')
+              })
+        })   
     })
 
     it('Selecionar um arquivo da pasta fixtures utilizando drag-and-drop', function() {
@@ -171,6 +173,24 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         .invoke('removeAttr', 'target')
         .click()
       cy.contains('Talking About Testing').should('be.visible')
+    })
+
+    it('Exibir e ocultar a mensagem de sucesso,', function(){
+      cy.get('.success')
+        .should('not.be.visible')
+        .invoke('show')
+        .should('be.visible')
+        .and('contain', 'Mensagem enviada com sucesso.')
+        .invoke('hide')
+        .should('not.be.visible')
+
+        cy.get('.error')
+        .should('not.be.visible')
+        .invoke('show')
+        .should('be.visible')
+        .and('contain', 'Valide os campos obrigatórios!')
+        .invoke('hide')
+        .should('not.be.visible')
     })
 
 })
